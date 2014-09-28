@@ -185,7 +185,7 @@ public class MyActivity extends ListActivity {
             public Map<String, String> getHeaders() throws AuthFailureError {
                 return createBasicAuthHeader(email, pwd);
             }
-        };
+            };
 
         requestQueue.add(request);
     }

@@ -35,7 +35,7 @@ public class AddItemActivity extends Activity{
 
     EditText user_id,desc,url;
 
-    //String userId,urlName,description;
+    SessionManager session;
 
     String urlName,description;
 
@@ -55,6 +55,21 @@ public class AddItemActivity extends Activity{
         url = (EditText) findViewById(R.id.url);
         desc = (EditText) findViewById(R.id.description);
 
+        session = new SessionManager(getApplicationContext());
+
+        session.checkLogin();
+
+        // get user data from session
+        HashMap<String, String> user = session.getUserDetails();
+
+        // name
+        username = user.get(SessionManager.KEY_EMAIL);
+
+        // email
+        pwd = user.get(SessionManager.KEY_PASS);
+
+
+
     }
 
 
@@ -70,6 +85,9 @@ public class AddItemActivity extends Activity{
 
                 urlName = url.getText().toString();
                 description = desc.getText().toString();
+
+                Toast.makeText(getApplicationContext(),username,Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(),pwd,Toast.LENGTH_SHORT).show();
 
                 requestData("http://api.nilsp.in/api/v1/url/");
                 Toast.makeText(getApplicationContext(), "Created Successfully!", Toast.LENGTH_SHORT).show();
@@ -108,7 +126,7 @@ public class AddItemActivity extends Activity{
 
             @Override
             public Map<String, String> getHeaders() throws AuthFailureError {
-                return createBasicAuthHeader("demouser2","demopass2");
+                return createBasicAuthHeader(username,pwd);
 
             }
 
