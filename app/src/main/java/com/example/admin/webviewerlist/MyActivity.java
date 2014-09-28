@@ -8,6 +8,7 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.net.Uri;
 import android.os.Bundle;
 import android.text.Html;
 import android.text.method.ScrollingMovementMethod;
@@ -17,6 +18,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -28,6 +30,8 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+
+import org.json.JSONException;
 
 import java.util.HashMap;
 import java.util.List;
@@ -216,6 +220,27 @@ public class MyActivity extends ListActivity {
             return true;
         } else {
             return false;
+        }
+    }
+
+    @Override
+    protected void onListItemClick(ListView l, View v, int position, long id) {
+        super.onListItemClick(l, v, position, id);
+        try {
+
+            Site site = siteList.get(position);
+            String urlNames =  site.getUrl();
+            String urlDescription = site.getDescription();
+            Integer urlID = site.getId();
+            Intent intent = new Intent(this, ModifyItemActivity.class);
+            Bundle extras = new Bundle();
+            extras.putString("EXTRA_URL",urlNames);
+            extras.putString("EXTRA_DESCRIPTION",urlDescription);
+            extras.putInt("EXTRA_URLID",urlID);
+            intent.putExtras(extras);
+            startActivity(intent);
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 }

@@ -40,5 +40,4 @@ public class SiteAdapter extends ArrayAdapter<Site> {
 		
 		return view;
 	}
-
 }
