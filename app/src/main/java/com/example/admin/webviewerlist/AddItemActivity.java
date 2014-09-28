@@ -21,6 +21,7 @@ import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
 
 import java.util.HashMap;
 import java.util.List;
@@ -53,6 +54,9 @@ public class AddItemActivity extends Activity{
         user_id = (EditText) findViewById(R.id.user_id);
         url = (EditText) findViewById(R.id.url);
         desc = (EditText) findViewById(R.id.description);
+
+        requestQueue = Volley.newRequestQueue(this);
+
     }
 
 
@@ -63,18 +67,23 @@ public class AddItemActivity extends Activity{
             urlName = url.getText().toString();
             description = desc.getText().toString();
 
-
-            if (isOnline()) {
-                requestData("http://api.nilsp.in/api/v1/url/");
-                Toast.makeText(getApplicationContext(), "Updated Successfully!", Toast.LENGTH_SHORT).show();
-                //Intent i = new Intent(getApplicationContext(), MyActivity.class);
-                //startActivity(i);
-            } else {
-                Toast.makeText(getApplicationContext(), "Network isn't available", Toast.LENGTH_LONG).show();
+            try {
+                if (isOnline()) {
+                    postData("http://api.nilsp.in/api/v1/url/");
+                    Toast.makeText(getApplicationContext(), "Updated Successfully!", Toast.LENGTH_SHORT).show();
+                    Intent i = new Intent(getApplicationContext(), MyActivity.class);
+                    startActivity(i);
+                } else {
+                    Toast.makeText(getApplicationContext(), "Network isn't available", Toast.LENGTH_LONG).show();
+                }
+            } catch (Exception e){
+                e.printStackTrace();
             }
         }
 
- private void requestData(String uri) {
+
+
+    private void postData(String uri) {
 
         StringRequest postRequest = new StringRequest(
                 Request.Method.POST,
