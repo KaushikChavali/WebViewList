@@ -37,8 +37,6 @@ public class AddItemActivity extends Activity{
 
     String userId,urlName,description;
 
-    Button commit;
-
     String username,pwd;
 
     List<Site> siteList;
@@ -51,9 +49,10 @@ public class AddItemActivity extends Activity{
         setContentView(R.layout.activity_additem);
 
 
-        user_id = (EditText) findViewById(R.id.user_id);
+        //user_id = (EditText) findViewById(R.id.user_id);
         url = (EditText) findViewById(R.id.url);
         desc = (EditText) findViewById(R.id.description);
+
 
         requestQueue = Volley.newRequestQueue(this);
 
@@ -63,16 +62,16 @@ public class AddItemActivity extends Activity{
 
         public void onClick(View view) {
 
-            userId = user_id.getText().toString();
+            //userId = user_id.getText().toString();
             urlName = url.getText().toString();
             description = desc.getText().toString();
 
             try {
                 if (isOnline()) {
-                    postData("http://api.nilsp.in/api/v1/url/");
+                    requestData("http://api.nilsp.in/api/v1/url/");
                     Toast.makeText(getApplicationContext(), "Updated Successfully!", Toast.LENGTH_SHORT).show();
-                    Intent i = new Intent(getApplicationContext(), MyActivity.class);
-                    startActivity(i);
+                    //Intent i = new Intent(getApplicationContext(), MyActivity.class);
+                    //startActivity(i);
                 } else {
                     Toast.makeText(getApplicationContext(), "Network isn't available", Toast.LENGTH_LONG).show();
                 }
@@ -81,9 +80,7 @@ public class AddItemActivity extends Activity{
             }
         }
 
-
-
-    private void postData(String uri) {
+    private void requestData(String uri) {
 
         StringRequest postRequest = new StringRequest(
                 Request.Method.POST,
@@ -93,8 +90,6 @@ public class AddItemActivity extends Activity{
                     @Override
                     public void onResponse(String response) {
                         Log.d("HTTP Response", response);
-                        //siteList = SiteJSONParser.parseFeed(response);
-
                     }
                 },
                 new Response.ErrorListener() {
@@ -108,16 +103,17 @@ public class AddItemActivity extends Activity{
                 }) {
 
             @Override
-            public java.util.Map<String, String> getHeaders() throws AuthFailureError {
-                return createBasicAuthHeader("demouser1", "demopass1");
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                return createBasicAuthHeader("demouser1","demopass1");
             }
 
 
             @Override
-            protected java.util.Map<String, String> getParams() {
-                Map<String, String> params = new HashMap<String, String>();
+            protected Map<String, String> getParams()
+            {
+                Map<String, String>  params = new HashMap<String, String>();
                 //params.put("id", "2");
-                params.put("user_id", userId);
+                //params.put("user_id", "1");
                 params.put("url", urlName);
                 params.put("description", description);
 
@@ -135,10 +131,13 @@ public class AddItemActivity extends Activity{
         String base64EncodedCredentials =
                 Base64.encodeToString(credentials.getBytes(), Base64.NO_WRAP);
         headerMap.put("Authorization", "Basic " + base64EncodedCredentials);
-        Log.d("HTTP Response", base64EncodedCredentials);
+        Log.d("HTTP Response",base64EncodedCredentials);
 
         return headerMap;
     }
+
+
+
 
     protected boolean isOnline() {
         ConnectivityManager cm = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
