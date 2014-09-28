@@ -53,6 +53,8 @@ public class AddItemActivity extends Activity{
         url = (EditText) findViewById(R.id.url);
         desc = (EditText) findViewById(R.id.description);
 
+        urlName = url.getText().toString();
+        description = desc.getText().toString();
 
         requestQueue = Volley.newRequestQueue(this);
 
@@ -63,13 +65,13 @@ public class AddItemActivity extends Activity{
         public void onClick(View view) {
 
             //userId = user_id.getText().toString();
-            urlName = url.getText().toString();
-            description = desc.getText().toString();
+
 
             try {
                 if (isOnline()) {
+
                     requestData("http://api.nilsp.in/api/v1/url/");
-                    Toast.makeText(getApplicationContext(), "Updated Successfully!", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(), "Created Successfully!", Toast.LENGTH_SHORT).show();
                     //Intent i = new Intent(getApplicationContext(), MyActivity.class);
                     //startActivity(i);
                 } else {
@@ -102,10 +104,10 @@ public class AddItemActivity extends Activity{
                     }
                 }) {
 
-            @Override
+            /*@Override
             public Map<String, String> getHeaders() throws AuthFailureError {
                 return createBasicAuthHeader("demouser1","demopass1");
-            }
+            }*/
 
 
             @Override
@@ -114,6 +116,8 @@ public class AddItemActivity extends Activity{
                 Map<String, String>  params = new HashMap<String, String>();
                 //params.put("id", "2");
                 //params.put("user_id", "1");
+                Toast.makeText(getApplicationContext(), urlName, Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(), description, Toast.LENGTH_SHORT).show();
                 params.put("url", urlName);
                 params.put("description", description);
 
