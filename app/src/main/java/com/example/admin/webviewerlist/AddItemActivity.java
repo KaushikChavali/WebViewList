@@ -35,7 +35,9 @@ public class AddItemActivity extends Activity{
 
     EditText user_id,desc,url;
 
-    String userId,urlName,description;
+    //String userId,urlName,description;
+
+    String urlName,description;
 
     String username,pwd;
 
@@ -53,34 +55,34 @@ public class AddItemActivity extends Activity{
         url = (EditText) findViewById(R.id.url);
         desc = (EditText) findViewById(R.id.description);
 
-        urlName = url.getText().toString();
-        description = desc.getText().toString();
-
-        requestQueue = Volley.newRequestQueue(this);
-
     }
 
 
 
-        public void onClick(View view) {
+    public void onClick(View view) {
 
-            //userId = user_id.getText().toString();
+        //userId = user_id.getText().toString();
 
 
-            try {
-                if (isOnline()) {
+        try {
+            if (isOnline()) {
+                requestQueue = Volley.newRequestQueue(this);
 
-                    requestData("http://api.nilsp.in/api/v1/url/");
-                    Toast.makeText(getApplicationContext(), "Created Successfully!", Toast.LENGTH_SHORT).show();
-                    //Intent i = new Intent(getApplicationContext(), MyActivity.class);
-                    //startActivity(i);
-                } else {
-                    Toast.makeText(getApplicationContext(), "Network isn't available", Toast.LENGTH_LONG).show();
-                }
-            } catch (Exception e){
-                e.printStackTrace();
+                urlName = url.getText().toString();
+                description = desc.getText().toString();
+
+                requestData("http://api.nilsp.in/api/v1/url/");
+                Toast.makeText(getApplicationContext(), "Created Successfully!", Toast.LENGTH_SHORT).show();
+                Intent i = new Intent(getApplicationContext(), MyActivity.class);
+
+                startActivity(i);
+            } else {
+                Toast.makeText(getApplicationContext(), "Network isn't available", Toast.LENGTH_LONG).show();
             }
+        } catch (Exception e){
+            e.printStackTrace();
         }
+    }
 
     private void requestData(String uri) {
 
@@ -104,10 +106,11 @@ public class AddItemActivity extends Activity{
                     }
                 }) {
 
-            /*@Override
+            @Override
             public Map<String, String> getHeaders() throws AuthFailureError {
-                return createBasicAuthHeader("demouser1","demopass1");
-            }*/
+                return createBasicAuthHeader("demouser2","demopass2");
+
+            }
 
 
             @Override
@@ -116,8 +119,6 @@ public class AddItemActivity extends Activity{
                 Map<String, String>  params = new HashMap<String, String>();
                 //params.put("id", "2");
                 //params.put("user_id", "1");
-                Toast.makeText(getApplicationContext(), urlName, Toast.LENGTH_SHORT).show();
-                Toast.makeText(getApplicationContext(), description, Toast.LENGTH_SHORT).show();
                 params.put("url", urlName);
                 params.put("description", description);
 
