@@ -60,6 +60,25 @@ public class SiteAdapter extends ArrayAdapter<Site>{
             }
         });
 
+        tv2.setOnClickListener(new TextView.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                //MyActivity myActivity1 = new MyActivity();
+                Site site = siteList.get(position);
+                String urlNames =  site.getUrl();
+                String urlDescription = site.getDescription();
+                Integer urlID = site.getId();
+                Intent intent;
+                intent = new Intent(getContext(), ModifyItemActivity.class);
+                Bundle extras = new Bundle();
+                extras.putString("EXTRA_URL",urlNames);
+                extras.putString("EXTRA_DESCRIPTION",urlDescription);
+                extras.putInt("EXTRA_URLID",urlID);
+                intent.putExtras(extras);
+                context.startActivity(intent);
+            }
+        });
+
         Button btnDiscard = (Button) view.findViewById(R.id.discardButton);
 
         btnDiscard.setOnClickListener(
