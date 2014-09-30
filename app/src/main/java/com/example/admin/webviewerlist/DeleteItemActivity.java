@@ -77,8 +77,7 @@ public class DeleteItemActivity extends Activity {
         textView1.setText(mUrl);
 
         TextView textView2 = (TextView)findViewById(R.id.description);
-        textView2.setText(mDescription)
-        ;
+        textView2.setText(mDescription);
     }
 
     public void onClickDelete(View view) {

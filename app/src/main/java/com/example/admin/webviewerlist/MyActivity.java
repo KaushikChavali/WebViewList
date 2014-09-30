@@ -129,6 +129,12 @@ public class MyActivity extends ListActivity {
 
             }
         });
+
+        if (isOnline()) {
+            requestData("http://api.nilsp.in/api/v1/url/");
+        } else {
+            Toast.makeText(this, "Network isn't available", Toast.LENGTH_LONG).show();
+        }
     }
 
     @Override
