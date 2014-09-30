@@ -43,8 +43,8 @@ public class MyActivity extends ListActivity {
     TextView output;
     ProgressBar pb;
 
-    String email;
-    String pwd;
+    public String email;
+    public String pwd;
 
     SessionManager session;
 
@@ -52,6 +52,8 @@ public class MyActivity extends ListActivity {
     Button btnLogout;
 
     List<Site> siteList;
+
+    SiteAdapter adapter;
 
     RequestQueue requestQueue;
 
@@ -190,7 +192,7 @@ public class MyActivity extends ListActivity {
                 return createBasicAuthHeader(email, pwd);
             }
             };
-
+        request.setShouldCache(false);
         requestQueue.add(request);
     }
 
@@ -209,7 +211,8 @@ public class MyActivity extends ListActivity {
 
 
     protected void updateDisplay() {
-        SiteAdapter adapter = new SiteAdapter(this, R.layout.item_site  , siteList);
+        adapter = new SiteAdapter(this, R.layout.item_site  , siteList);
+        adapter.notifyDataSetChanged();
         setListAdapter(adapter);
     }
 
@@ -220,27 +223,6 @@ public class MyActivity extends ListActivity {
             return true;
         } else {
             return false;
-        }
-    }
-
-    @Override
-    protected void onListItemClick(ListView l, View v, int position, long id) {
-        super.onListItemClick(l, v, position, id);
-        try {
-
-            Site site = siteList.get(position);
-            String urlNames =  site.getUrl();
-            String urlDescription = site.getDescription();
-            Integer urlID = site.getId();
-            Intent intent = new Intent(this, ModifyItemActivity.class);
-            Bundle extras = new Bundle();
-            extras.putString("EXTRA_URL",urlNames);
-            extras.putString("EXTRA_DESCRIPTION",urlDescription);
-            extras.putInt("EXTRA_URLID",urlID);
-            intent.putExtras(extras);
-            startActivity(intent);
-        } catch (Exception e) {
-            e.printStackTrace();
         }
     }
 }

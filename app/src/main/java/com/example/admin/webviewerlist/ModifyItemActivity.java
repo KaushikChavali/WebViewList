@@ -47,42 +47,42 @@ public class ModifyItemActivity extends Activity {
 
     RequestQueue requestQueue;
 
-        @Override
-        protected void onCreate(Bundle savedInstanceState) {
-            super.onCreate(savedInstanceState);
-            setContentView(R.layout.activity_modifyitem);
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_modifyitem);
 
-            url = (EditText) findViewById(R.id.url);
-            desc = (EditText) findViewById(R.id.description);
+        url = (EditText) findViewById(R.id.url);
+        desc = (EditText) findViewById(R.id.description);
 
-            session = new SessionManager(getApplicationContext());
+        session = new SessionManager(getApplicationContext());
 
-            session.checkLogin();
+        session.checkLogin();
 
-            // get user data from session
-            HashMap<String, String> user = session.getUserDetails();
+        // get user data from session
+        HashMap<String, String> user = session.getUserDetails();
 
-            // name
-            username = user.get(SessionManager.KEY_EMAIL);
+        // name
+        username = user.get(SessionManager.KEY_EMAIL);
 
-            // email
-            pwd = user.get(SessionManager.KEY_PASS);
+        // email
+        pwd = user.get(SessionManager.KEY_PASS);
 
-            Intent intent = getIntent();
+        Intent intent = getIntent();
 
-            Bundle extras = intent.getExtras();
+        Bundle extras = intent.getExtras();
 
-            mUrl = extras.getString("EXTRA_URL");
-            mDescription = extras.getString("EXTRA_DESCRIPTION");
-            mUrlID = extras.getInt("EXTRA_URLID");
+        mUrl = extras.getString("EXTRA_URL");
+        mDescription = extras.getString("EXTRA_DESCRIPTION");
+        mUrlID = extras.getInt("EXTRA_URLID");
 
 
-            EditText editText1 = (EditText)findViewById(R.id.url);
-            editText1.setText(mUrl, TextView.BufferType.EDITABLE);
+        EditText editText1 = (EditText)findViewById(R.id.url);
+        editText1.setText(mUrl, TextView.BufferType.EDITABLE);
 
-            EditText editText2 = (EditText)findViewById(R.id.description);
-            editText2.setText(mDescription, TextView.BufferType.EDITABLE);
-        }
+        EditText editText2 = (EditText)findViewById(R.id.description);
+        editText2.setText(mDescription, TextView.BufferType.EDITABLE);
+    }
 
     public void onClick(View view) {
 
@@ -108,7 +108,7 @@ public class ModifyItemActivity extends Activity {
 
     private void requestData(String uri) {
 
-        StringRequest postRequest = new StringRequest(
+        StringRequest putRequest = new StringRequest(
                 Request.Method.PUT,
                 uri,
                 new Response.Listener<String>() {
@@ -145,8 +145,8 @@ public class ModifyItemActivity extends Activity {
                 return params;
             }
         };
-
-        requestQueue.add(postRequest);
+        putRequest.setShouldCache(false);
+        requestQueue.add(putRequest);
     }
 
     private Map<String, String> createBasicAuthHeader(String username, String password) {

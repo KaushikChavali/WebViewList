@@ -9,9 +9,7 @@ import android.os.Bundle;
 import android.util.Base64;
 import android.util.Log;
 import android.view.View;
-import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -28,12 +26,14 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Created by admin on 9/27/2014.
+ * Created by admin on 9/30/2014.
  */
-public class AddItemActivity extends Activity{
+public class DeleteItemActivity extends Activity {
+    protected String mUrl;
+    protected String mDescription;
+    protected Integer mUrlID;
 
-
-    EditText desc,url;
+    TextView desc,url;
 
     SessionManager session;
 
@@ -44,12 +44,12 @@ public class AddItemActivity extends Activity{
     RequestQueue requestQueue;
 
     @Override
-    public void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_additem);
+        setContentView(R.layout.activity_deleteitem);
 
-        url = (EditText) findViewById(R.id.url);
-        desc = (EditText) findViewById(R.id.description);
+        url = (TextView) findViewById(R.id.url);
+        desc = (TextView) findViewById(R.id.description);
 
         session = new SessionManager(getApplicationContext());
 
@@ -64,11 +64,24 @@ public class AddItemActivity extends Activity{
         // email
         pwd = user.get(SessionManager.KEY_PASS);
 
+        Intent intent = getIntent();
+
+        Bundle extras = intent.getExtras();
+
+        mUrl = extras.getString("EXTRA_URL");
+        mDescription = extras.getString("EXTRA_DESCRIPTION");
+        mUrlID = extras.getInt("EXTRA_URLID");
+
+
+        TextView textView1 = (TextView)findViewById(R.id.url);
+        textView1.setText(mUrl);
+
+        TextView textView2 = (TextView)findViewById(R.id.description);
+        textView2.setText(mDescription)
+        ;
     }
 
-
-
-    public void onClick(View view) {
+    public void onClickDelete(View view) {
 
         try {
             if (isOnline()) {
@@ -77,8 +90,8 @@ public class AddItemActivity extends Activity{
                 urlName = url.getText().toString();
                 description = desc.getText().toString();
 
-                requestData("http://api.nilsp.in/api/v1/url/");
-                Toast.makeText(getApplicationContext(), "Created Successfully!", Toast.LENGTH_SHORT).show();
+                deleteData("http://api.nilsp.in/api/v1/url/" + mUrlID);
+                Toast.makeText(getApplicationContext(), "Updated Successfully!", Toast.LENGTH_SHORT).show();
                 Intent i = new Intent(getApplicationContext(), MyActivity.class);
 
                 startActivity(i);
@@ -90,10 +103,11 @@ public class AddItemActivity extends Activity{
         }
     }
 
-    private void requestData(String uri) {
 
-        StringRequest postRequest = new StringRequest(
-                Request.Method.POST,
+    public void deleteData(String uri){
+
+        StringRequest delRequest = new StringRequest(
+                Request.Method.DELETE,
                 uri,
                 new Response.Listener<String>() {
 
@@ -107,7 +121,7 @@ public class AddItemActivity extends Activity{
                     @Override
                     public void onErrorResponse(VolleyError error) {
                         if (error.networkResponse != null) {
-                            Toast.makeText(AddItemActivity.this, error.getMessage(), Toast.LENGTH_LONG).show();
+
                         }
                     }
                 }) {
@@ -115,25 +129,14 @@ public class AddItemActivity extends Activity{
             @Override
             public Map<String, String> getHeaders() throws AuthFailureError {
                 return createBasicAuthHeader(username,pwd);
-
             }
 
-
-            @Override
-            protected Map<String, String> getParams()
-            {
-                Map<String, String>  params = new HashMap<String, String>();
-                params.put("url", urlName);
-                params.put("description", description);
-
-                return params;
-            }
         };
-        postRequest.setShouldCache(false);
-        requestQueue.add(postRequest);
+
+        requestQueue.add(delRequest);
     }
 
-    private Map<String, String> createBasicAuthHeader(String username, String password) {
+    private static Map<String, String> createBasicAuthHeader(String username, String password) {
         Map<String, String> headerMap = new HashMap<String, String>();
 
         String credentials = username + ":" + password;
@@ -145,9 +148,6 @@ public class AddItemActivity extends Activity{
         return headerMap;
     }
 
-
-
-
     protected boolean isOnline() {
         ConnectivityManager cm = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo netInfo = cm.getActiveNetworkInfo();
@@ -158,3 +158,4 @@ public class AddItemActivity extends Activity{
         }
     }
 }
+
