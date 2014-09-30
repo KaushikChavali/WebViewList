@@ -40,7 +40,6 @@
         android:paddingTop="64dp"
         android:layout_below="@id/textView1"
         android:layout_toRightOf="@+id/imageView1"
-        android:layout_toLeftOf="@id/discardButton"
         android:layout_centerVertical="true"
         android:text=""
         android:textAppearance="?android:attr/textAppearanceMedium" />

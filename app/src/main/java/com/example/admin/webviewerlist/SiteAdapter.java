@@ -5,14 +5,24 @@ import java.util.List;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
+import android.util.LruCache;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
+
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.ImageRequest;
+import com.android.volley.toolbox.Volley;
 
 public class SiteAdapter extends ArrayAdapter<Site>{
 
@@ -22,11 +32,22 @@ public class SiteAdapter extends ArrayAdapter<Site>{
 	private List<Site> siteList;
     LayoutInflater inflater;
 
-	public SiteAdapter(Context context, int resource, List<Site> objects) {
+    private LruCache<Integer, Bitmap> imageCache;
+
+    private RequestQueue queue;
+
+
+    public SiteAdapter(Context context, int resource, List<Site> objects) {
 		super(context, resource, objects);
         this.context = context;
 		this.siteList = objects;
-	}
+
+        final int maxMemory = (int)(Runtime.getRuntime().maxMemory() /1024);
+        final int cacheSize = maxMemory / 8;
+        imageCache = new LruCache<Integer, Bitmap>(cacheSize);
+
+        queue = Volley.newRequestQueue(context);
+    }
 
 	@Override
 	public View getView(final int position, final View convertView, final ViewGroup parent) {
@@ -115,6 +136,37 @@ public class SiteAdapter extends ArrayAdapter<Site>{
                     }
                 }
         );
+
+        //Display image in ImageView widget
+        Bitmap bitmap = imageCache.get(site.getId());
+        final ImageView image = (ImageView) view.findViewById(R.id.imageView1);
+        if (bitmap != null) {
+           image.setImageBitmap(bitmap);
+        }
+        else {
+            String imageUrl = MyActivity.PHOTOS_BASE_URL;
+            ImageRequest request = new ImageRequest(imageUrl,
+                    new Response.Listener<Bitmap>() {
+
+                        @Override
+                        public void onResponse(Bitmap arg0) {
+                            image.setImageBitmap(arg0);
+                            //imageCache.put(flower.getProductId(), arg0);
+                        }
+                    },
+                    80, 80,
+                    Bitmap.Config.ARGB_8888,
+
+                    new Response.ErrorListener() {
+
+                        @Override
+                        public void onErrorResponse(VolleyError arg0) {
+                            Log.d("FlowerAdapter", arg0.getMessage());
+                        }
+                    }
+            );
+            queue.add(request);
+        }
 
 		return view;
 	}

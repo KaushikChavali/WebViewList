@@ -43,6 +43,8 @@ public class MyActivity extends ListActivity {
     TextView output;
     ProgressBar pb;
 
+    public static final String PHOTOS_BASE_URL = "http://lorempixel.com/60/60/nature/";
+
     public String email;
     public String pwd;
 

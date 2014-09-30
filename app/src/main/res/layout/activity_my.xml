@@ -19,6 +19,7 @@
         android:id="@+id/lblPassword"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
+        android:paddingBottom="18dp"
         android:text=""/>
 
     <Button
@@ -45,8 +46,6 @@
         android:id="@+id/progressBar"
         android:layout_centerVertical="true"
         android:layout_centerHorizontal="true" />
-
-
 
 </RelativeLayout>
 
