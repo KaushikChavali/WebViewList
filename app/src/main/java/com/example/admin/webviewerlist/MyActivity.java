@@ -62,6 +62,10 @@ public class MyActivity extends ListActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_my);
 
+
+        pb = (ProgressBar) findViewById(R.id.progressBar);
+        pb.setVisibility(View.VISIBLE);
+
         IntentFilter intentFilter = new IntentFilter();
         intentFilter.addAction("com.package.ACTION_LOGOUT");
         registerReceiver(new BroadcastReceiver() {
@@ -73,11 +77,6 @@ public class MyActivity extends ListActivity {
                 finish();
             }
         }, intentFilter);
-
-
-        pb = (ProgressBar) findViewById(R.id.progressBar);
-        pb.setVisibility(View.INVISIBLE);
-
 
         requestQueue = Volley.newRequestQueue(this);
 
@@ -181,6 +180,7 @@ public class MyActivity extends ListActivity {
                         Log.d("HTTP Response", response);
                         siteList = SiteJSONParser.parseFeed(response);
                         updateDisplay();
+                        pb.setVisibility(View.INVISIBLE);
                     }
                 },
                 new Response.ErrorListener() {

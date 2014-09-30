@@ -18,8 +18,8 @@
         android:layout_height="35dp"
         android:background="@drawable/ic_action_discard"
         android:id="@+id/discardButton"
-        android:layout_centerVertical="true"
-        android:layout_alignParentEnd="true"/>
+        android:layout_alignTop="@+id/textView2"
+        android:layout_alignParentEnd="true" />
 
     <TextView
         android:id="@+id/textView1"
@@ -44,5 +44,14 @@
         android:layout_centerVertical="true"
         android:text=""
         android:textAppearance="?android:attr/textAppearanceMedium" />
+
+    <Button
+        style="?android:attr/buttonStyleSmall"
+        android:layout_width="35dp"
+        android:layout_height="35dp"
+        android:background="@drawable/ic_action_edit"
+        android:id="@+id/editButton"
+        android:layout_alignBottom="@+id/textView2"
+        android:layout_toEndOf="@+id/textView1" />
 
 </RelativeLayout>

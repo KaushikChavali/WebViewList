@@ -90,7 +90,7 @@ public class DeleteItemActivity extends Activity {
                 description = desc.getText().toString();
 
                 deleteData("http://api.nilsp.in/api/v1/url/" + mUrlID);
-                Toast.makeText(getApplicationContext(), "Updated Successfully!", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(), "Deleted Successfully!", Toast.LENGTH_SHORT).show();
                 Intent i = new Intent(getApplicationContext(), MyActivity.class);
 
                 startActivity(i);

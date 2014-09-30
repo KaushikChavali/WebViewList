@@ -5,6 +5,7 @@ import java.util.List;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -47,20 +48,34 @@ public class SiteAdapter extends ArrayAdapter<Site>{
                 //MyActivity myActivity1 = new MyActivity();
                 Site site = siteList.get(position);
                 String urlNames =  site.getUrl();
-                String urlDescription = site.getDescription();
-                Integer urlID = site.getId();
                 Intent intent;
-                intent = new Intent(getContext(), ModifyItemActivity.class);
-                Bundle extras = new Bundle();
-                extras.putString("EXTRA_URL",urlNames);
-                extras.putString("EXTRA_DESCRIPTION",urlDescription);
-                extras.putInt("EXTRA_URLID",urlID);
-                intent.putExtras(extras);
+                intent = new Intent(getContext(), WebReaderActivity.class);
+                intent.setData(Uri.parse(urlNames));
                 context.startActivity(intent);
             }
         });
 
         tv2.setOnClickListener(new TextView.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                //MyActivity myActivity1 = new MyActivity();
+                Site site = siteList.get(position);
+                String urlNames =  site.getUrl();
+                String urlDescription = site.getDescription();
+                Intent intent;
+                intent = new Intent(getContext(), WebReaderActivity.class);
+                Bundle extras = new Bundle();
+                extras.putString("EXTRA_URL",urlNames);
+                extras.putString("EXTRA_DESCRIPTION",urlDescription);
+                intent.putExtras(extras);
+                context.startActivity(intent);
+            }
+        });
+
+
+        Button btnEdit = (Button) view.findViewById(R.id.editButton);
+
+        btnEdit.setOnClickListener(new TextView.OnClickListener() {
             @Override
             public void onClick(View view) {
                 //MyActivity myActivity1 = new MyActivity();
