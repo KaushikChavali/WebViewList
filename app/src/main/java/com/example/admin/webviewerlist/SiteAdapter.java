@@ -66,12 +66,15 @@ public class SiteAdapter extends ArrayAdapter<Site>{
         tv1.setOnClickListener(new TextView.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //MyActivity myActivity1 = new MyActivity();
                 Site site = siteList.get(position);
                 String urlNames =  site.getUrl();
+                String urlDescription = site.getDescription();
                 Intent intent;
                 intent = new Intent(getContext(), WebReaderActivity.class);
-                intent.setData(Uri.parse(urlNames));
+                Bundle extras = new Bundle();
+                extras.putString("EXTRA_URL",urlNames);
+                extras.putString("EXTRA_DESCRIPTION",urlDescription);
+                intent.putExtras(extras);
                 context.startActivity(intent);
             }
         });
@@ -79,7 +82,6 @@ public class SiteAdapter extends ArrayAdapter<Site>{
         tv2.setOnClickListener(new TextView.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //MyActivity myActivity1 = new MyActivity();
                 Site site = siteList.get(position);
                 String urlNames =  site.getUrl();
                 String urlDescription = site.getDescription();
@@ -161,13 +163,12 @@ public class SiteAdapter extends ArrayAdapter<Site>{
 
                         @Override
                         public void onErrorResponse(VolleyError arg0) {
-                            Log.d("FlowerAdapter", arg0.getMessage());
+                            Log.d("FlowerAdapter", "Error loading images");
                         }
                     }
             );
             queue.add(request);
         }
-
 		return view;
 	}
 }

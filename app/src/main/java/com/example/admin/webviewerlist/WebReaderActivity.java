@@ -2,14 +2,11 @@ package com.example.admin.webviewerlist;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
-
-import com.example.admin.webviewerlist.R;
 
 public class WebReaderActivity extends Activity {
 
@@ -28,8 +25,6 @@ public class WebReaderActivity extends Activity {
         mUrl = extras.getString("EXTRA_URL");
         mDescription = extras.getString("EXTRA_DESCRIPTION");
 
-        mUrl = mUrl.toString();
-
         WebView webView = (WebView) findViewById(R.id.webView);
         webView.loadUrl(mUrl);
         webView.setWebViewClient(new WebViewClient());
@@ -40,7 +35,7 @@ public class WebReaderActivity extends Activity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.webview, menu);
+        getMenuInflater().inflate(R.menu.my_webview, menu);
         return true;
     }
 
